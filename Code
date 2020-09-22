@@ -1,0 +1,33 @@
+function autoforward() {
+
+  var label = 'Sendmail';
+
+  var sentLabel = GmailApp.getUserLabelByName("Sendmail")
+
+  var recipient = 'RECIPIENT EMAIL GOES HERE';
+
+  var interval = 5;          //  if the script runs every 5 minutes; change otherwise
+
+  var date = new Date();
+
+  var timeFrom = Math.floor(date.valueOf()/1000) - 60 * interval;
+
+  var threads = GmailApp.search('label:' + label + ' after:' + timeFrom);
+
+  for (var i = 0; i < threads.length; i++) {
+
+    var messages = threads[i].getMessages();
+
+    messages[messages.length - 1].forward(recipient);
+
+  }
+
+  for (var x in threads) {
+
+    var thread = threads[x];
+
+  thread.removeLabel(sentLabel);
+
+  }
+
+}
